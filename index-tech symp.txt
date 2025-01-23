@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Cache-Control" content="no-cache">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <title>Accenture Branded Fluid Simulation</title>
+
+        <link rel="stylesheet" href="index.css">
+
+        <script type="text/javascript" src="../_shared/dat.gui.min.js"></script>
+    </head>
+    <body>
+        <img id="guides" src="../_shared/guides.svg">
+        <canvas></canvas>
+        <div id="welcome">
+            <div class='welcome-text'>welcome to the</div>
+            <div class='aih'>Atlanta <br /> Innovation Hub <br /> <br/> <div class='tech-symp'><div class='tech'>Tech</div>&nbsp Symposium 2020 </div></div>
+        </div>
+        <div id='touch'>Touch Me!</div>
+        <div id="acnlogo"></div>
+        <script src="script.js"></script>
+    </body>
+</html>

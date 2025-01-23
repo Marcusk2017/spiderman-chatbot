@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create config.js
+        run: |
+          echo "Creating config.js with API keys..."
+          echo "window.OPENAI_API_KEY = '${{ secrets.OPENAI_API_KEY }}';" > config.js
+          echo "window.ELEVENLABS_API_KEY = '${{ secrets.ELEVENLABS_API_KEY }}';" >> config.js
+          echo "Config file created with length: $(wc -c < config.js)"
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          branch: gh-pages

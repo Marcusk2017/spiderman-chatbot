@@ -1,0 +1,28 @@
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+config.js
+
+# Test files
+test-api.js
+test-api.html
+
+# Dependencies
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Additional files
+test-api.js  # Since it contains API keys
