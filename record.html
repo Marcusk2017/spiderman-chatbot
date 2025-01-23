@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spider-Man Voice Recorder</title>
+    <style>
+        .recording { color: red; }
+        .saved { color: green; }
+    </style>
+</head>
+<body>
+    <h2>Spider-Man Voice Recorder</h2>
+    <div id="current-line"></div>
+    <button id="record">Start Recording</button>
+    <button id="stop" disabled>Stop</button>
+    <button id="play">Play</button>
+    <button id="save">Save</button>
+    <button id="next">Next Line</button>
+    
+    <script>
+        const lines = {
+            "welcome": "Welcome to the Atlanta Innovation Hub! I'm your friendly neighborhood Spider-Man!",
+            "hello": "Hey there! Spider-Man here, ready to help!",
+            "goodbye": "Thanks for stopping by! Your friendly neighborhood Spider-Man's always here to help!",
+            "makers_lab": "The Makers Lab is where all the cool tech magic happens! It's like my web-shooters - always creating something amazing!",
+            "liquid_studio": "The Liquid Studio team is like the Avengers of tech - they're always building incredible solutions!",
+            "select_team": "The SELECT team? They're the tech wizards who master new technologies faster than I can swing across Manhattan!",
+            "innovation_hub": "The Innovation Hub is like my second home - it's where all the cutting-edge tech comes to life!",
+            "accenture_info": "Holy web-shooters! Accenture is this amazing global tech powerhouse that's basically like the Avengers of consulting!",
+            "spiderman_intro": "Your friendly neighborhood Spider-Man here, hanging out at the Innovation Hub! What's on your mind?",
+            "tech_excitement": "Wow! This tech is even cooler than my web-shooters! And trust me, those are pretty amazing!",
+            "joke_response": "With great power comes great responsibility... to make awesome tech demos!"
+        };
+
+        let currentLineIndex = 0;
+        let mediaRecorder;
+        let audioChunks = [];
+        
+        document.getElementById('record').onclick = async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.start();
+            document.getElementById('record').disabled = true;
+            document.getElementById('stop').disabled = false;
+            document.getElementById('current-line').classList.add('recording');
+        };
+
+        document.getElementById('stop').onclick = () => {
+            mediaRecorder.stop();
+            document.getElementById('record').disabled = false;
+            document.getElementById('stop').disabled = true;
+            document.getElementById('current-line').classList.remove('recording');
+        };
+
+        document.getElementById('save').onclick = () => {
+            const audioBlob = new Blob(audioChunks);
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const link = document.createElement('a');
+            link.href = audioUrl;
+            link.download = `${Object.keys(lines)[currentLineIndex]}.mp3`;
+            link.click();
+            audioChunks = [];
+            document.getElementById('current-line').classList.add('saved');
+        };
+
+        document.getElementById('next').onclick = () => {
+            currentLineIndex++;
+            if (currentLineIndex >= Object.keys(lines).length) currentLineIndex = 0;
+            updateCurrentLine();
+        };
+
+        function updateCurrentLine() {
+            const key = Object.keys(lines)[currentLineIndex];
+            document.getElementById('current-line').textContent = 
+                `${key}: ${lines[key]}`;
+            document.getElementById('current-line').classList.remove('saved');
+        }
+
+        updateCurrentLine();
+    </script>
+</body>
+</html> 

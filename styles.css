@@ -1,0 +1,174 @@
+@font-face {
+    font-family: 'Graphik-Font';
+    src: url('graphik/Graphik-Bold.woff2') format('woff2'),
+        url('graphik/Graphik-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik-Font';
+    src: url('graphik/Graphik-Regular.woff2') format('woff2'),
+        url('graphik/Graphik-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    user-select: none;
+    box-sizing: border-box;
+    font-family: 'Graphik-Font';
+}
+
+html, body {
+    overflow: hidden;
+    background-color: #000;
+}
+
+body {
+    margin: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#guides {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.dg {
+    display: none;
+}
+
+#welcome {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 33%;
+    padding: 2%;
+    font-size: 5.5vh;
+    line-height: 1;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #FFF;
+    background-origin: content-box;
+    z-index: 999;
+}
+
+.welcome-text {
+    font-size: 2.5vh;
+    line-height: initial;
+}
+
+.tech-symp {
+    display: flex;
+}
+
+.tech {
+    color: #a100ff;
+}
+
+#touch {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 33%;
+    padding: 2%;
+    font-size: 2vh;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #FFF;
+    background-origin: content-box;
+    z-index: 999;
+}
+
+#acnlogo {
+    pointer-events: auto;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 33%;
+    height: 33%;
+    padding: 3%;
+    background: url('acnlogo.svg') no-repeat right center;
+    background-origin: content-box;
+    z-index: 999;
+}
+
+/* Chatbot styles */
+.chat-container {
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: block;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    color: white;
+    pointer-events: auto;
+}
+
+#chat-box {
+    height: 180px;
+    overflow-y: scroll;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    color: white;
+}
+
+#user-input {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 5px;
+}
+
+#send-button, #stop-button {
+    padding: 8px 15px;
+    background: #a100ff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#send-button:hover, #stop-button:hover {
+    background: #8400d1;
+}
+
+#3d-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}

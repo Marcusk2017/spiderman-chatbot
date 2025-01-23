@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>Accenture Branded Fluid Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+    <img id="guides" src="../_shared/guides.svg">
+    <canvas id="3d-canvas"></canvas>
+    
+    <div class="chat-container">
+        <div id="chat-box"></div>
+        <div class="chat-controls">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+            <button id="stop-button">Stop</button>
+            <button id="toggle-history">Hide</button>
+        </div>
+    </div>
+    
+    <div id="welcome">
+        <div class='welcome-text'>welcome to the</div>
+        <div class='aih'>Atlanta <br /> Innovation Hub </div>
+    </div>
+    <div id='touch'>Touch Me!</div>
+    <div id="acnlogo"></div>
+    
+    <!-- Load configuration -->
+    <script src="config.js"></script>
+    
+    <!-- Then load your main script -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
