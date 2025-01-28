@@ -29,47 +29,99 @@ scene.add(directionalLight);
 camera.position.set(0, 1, 8); // Centered camera
 camera.lookAt(0, 0, 0);
 
+// Add loading indicator
+function createLoadingIndicator() {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'loading-indicator';
+    loadingDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        z-index: 1000;
+    `;
+    
+    const spinner = document.createElement('div');
+    spinner.style.cssText = `
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #a100ff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 10px auto;
+        animation: spin 1s linear infinite;
+    `;
+    
+    const text = document.createElement('div');
+    text.id = 'loading-text';
+    text.textContent = 'Loading 3D Model...';
+    
+    loadingDiv.appendChild(spinner);
+    loadingDiv.appendChild(text);
+    document.body.appendChild(loadingDiv);
+    
+    // Add animation style
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    return loadingDiv;
+}
+
+// Update model loading code
+const loadingIndicator = createLoadingIndicator();
+
 // Load 3D model
 const loader = new THREE.GLTFLoader();
-loader.load('Marcus3d_model.glb', function (gltf) {
-    const model = gltf.scene;
-    
-    // Scale the model appropriately
-    model.scale.set(10, 10, 10);
-    
-    // Position the model above the chat box
-    model.position.set(0, 2, -2); // Centered horizontally, raised up
-    
-    // Rotate to face forward
-    model.rotation.y = -1.5; // Face forward
-    
-    scene.add(model);
-    
-    // Store the model for animation
-    window.characterModel = model;
-    
-    console.log('Model loaded successfully');
-}, 
-function (progress) {
-    // Add check for total to avoid Infinity%
-    if (progress.total > 0) {
-        const percent = (progress.loaded / progress.total * 100).toFixed(2);
-        console.log('Loading model...', percent + '%');
-    } else {
-        console.log('Loading model...', progress.loaded + ' bytes');
+loader.load('Marcus3d_model.glb', 
+    function (gltf) {
+        // Success callback
+        const model = gltf.scene;
+        model.scale.set(10, 10, 10);
+        model.position.set(0, 2, -2);
+        model.rotation.y = -1.5;
+        scene.add(model);
+        window.characterModel = model;
+        console.log('Model loaded successfully');
+        
+        // Remove loading indicator on success
+        loadingIndicator.remove();
+    }, 
+    function (progress) {
+        // Progress callback
+        if (progress.total > 0) {
+            const percent = (progress.loaded / progress.total * 100).toFixed(2);
+            document.getElementById('loading-text').textContent = 
+                `Loading 3D Model... ${percent}%`;
+        } else {
+            document.getElementById('loading-text').textContent = 
+                `Loading 3D Model... ${(progress.loaded / 1024).toFixed(2)} KB`;
+        }
+    },
+    function (error) {
+        // Error callback
+        console.error('Error loading model:', error);
+        loadingIndicator.style.background = 'rgba(200, 0, 0, 0.8)';
+        document.getElementById('loading-text').textContent = 
+            'Failed to load 3D model. Please refresh the page.';
+        
+        // Remove error message after 5 seconds
+        setTimeout(() => {
+            loadingIndicator.remove();
+        }, 5000);
     }
-},
-function (error) {
-    console.error('Error loading model:', error);
-    // Add visible error message
-    const errorDiv = document.createElement('div');
-    errorDiv.style.color = 'red';
-    errorDiv.style.position = 'fixed';
-    errorDiv.style.top = '10px';
-    errorDiv.style.left = '10px';
-    errorDiv.textContent = 'Failed to load 3D model. Please check console for details.';
-    document.body.appendChild(errorDiv);
-});
+);
 
 // Animation loop
 function animate() {
