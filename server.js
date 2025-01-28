@@ -6,22 +6,35 @@ const app = express();
 // Load environment variables
 dotenv.config();
 
-// Serve static files
-app.use(express.static('./'));
+// Serve static files with proper MIME types
+app.use(express.static('./', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.glb')) {
+            res.set('Content-Type', 'model/gltf-binary');
+        }
+    }
+}));
 
 // Add environment variables to window object
 app.get('/config.js', (req, res) => {
     res.type('application/javascript');
     res.send(`
-        window.OPENAI_API_KEY = "${process.env.OPENAI_API_KEY.trim()}";
-        window.ELEVENLABS_API_KEY = "${process.env.ELEVENLABS_API_KEY.trim()}";
+        window.OPENAI_API_KEY = "${process.env.OPENAI_API_KEY?.trim() || ''}";
+        window.ELEVENLABS_API_KEY = "${process.env.ELEVENLABS_API_KEY?.trim() || ''}";
+        console.log('Config loaded with keys:', {
+            openai: !!window.OPENAI_API_KEY,
+            elevenlabs: !!window.ELEVENLABS_API_KEY
+        });
     `);
 });
 
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
-    // Debug log (keys will be masked in console)
-    console.log('OpenAI Key length:', process.env.OPENAI_API_KEY?.length);
-    console.log('ElevenLabs Key length:', process.env.ELEVENLABS_API_KEY?.length);
+    console.log('Place your 3D model file in the root directory as "Marcus3d_model.glb"');
+    // Verify keys are loaded
+    console.log('API Keys present:', {
+        openai: !!process.env.OPENAI_API_KEY,
+        elevenlabs: !!process.env.ELEVENLABS_API_KEY
+    });
 }); 

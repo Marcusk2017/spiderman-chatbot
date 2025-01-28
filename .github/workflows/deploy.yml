@@ -11,7 +11,9 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: 
+      name: production
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,14 +24,15 @@ jobs:
           cat > config.js << EOL
           window.OPENAI_API_KEY = "${{ secrets.OPENAI_API_KEY }}";
           window.ELEVENLABS_API_KEY = "${{ secrets.ELEVENLABS_API_KEY }}";
-          console.log('Config loaded - API Keys present:', {
-            openai: window.OPENAI_API_KEY?.length > 0,
-            elevenlabs: window.ELEVENLABS_API_KEY?.length > 0
+          console.log('Config loaded with keys:', {
+            openai: !!window.OPENAI_API_KEY,
+            elevenlabs: !!window.ELEVENLABS_API_KEY
           });
           EOL
           echo "Config file created with length: $(wc -c < config.js)"
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: .
