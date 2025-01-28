@@ -51,10 +51,24 @@ loader.load('Marcus3d_model.glb', function (gltf) {
     console.log('Model loaded successfully');
 }, 
 function (progress) {
-    console.log('Loading model...', (progress.loaded / progress.total * 100) + '%');
+    // Add check for total to avoid Infinity%
+    if (progress.total > 0) {
+        const percent = (progress.loaded / progress.total * 100).toFixed(2);
+        console.log('Loading model...', percent + '%');
+    } else {
+        console.log('Loading model...', progress.loaded + ' bytes');
+    }
 },
 function (error) {
     console.error('Error loading model:', error);
+    // Add visible error message
+    const errorDiv = document.createElement('div');
+    errorDiv.style.color = 'red';
+    errorDiv.style.position = 'fixed';
+    errorDiv.style.top = '10px';
+    errorDiv.style.left = '10px';
+    errorDiv.textContent = 'Failed to load 3D model. Please check console for details.';
+    document.body.appendChild(errorDiv);
 });
 
 // Animation loop
