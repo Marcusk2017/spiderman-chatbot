@@ -31,17 +31,17 @@ camera.lookAt(0, 0, 0);
 
 // Load 3D model
 const loader = new THREE.GLTFLoader();
-loader.load('Sketchfab_2023_11_01_15_18_19.glb', function (gltf) {
+loader.load('Marcus3d_model.glb', function (gltf) {
     const model = gltf.scene;
     
     // Scale the model appropriately
-    model.scale.set(5, 5, 5);
+    model.scale.set(10, 10, 10);
     
     // Position the model above the chat box
     model.position.set(0, 2, -2); // Centered horizontally, raised up
     
     // Rotate to face forward
-    model.rotation.y = 0; // Face forward
+    model.rotation.y = -1.5; // Face forward
     
     scene.add(model);
     
