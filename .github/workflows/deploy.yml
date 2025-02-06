@@ -3,32 +3,29 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  deployment:
+  build:
+
     runs-on: ubuntu-latest
-    environment: production
-    concurrency: production
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    
+    - name: Checkout
+      uses: actions/checkout@v1
 
-      - name: Create config.js
-        run: |
-          echo "Creating config.js with API keys..."
-          cat > config.js << EOL
-          window.OPENAI_API_KEY = "${{ secrets.OPENAI_API_KEY }}";
-          window.ELEVENLABS_API_KEY = "${{ secrets.ELEVENLABS_API_KEY }}";
-          console.log('Config loaded with keys:', {
-            openai: !!window.OPENAI_API_KEY,
-            elevenlabs: !!window.ELEVENLABS_API_KEY
-          });
-          EOL
-          echo "Config file created with length: $(wc -c < config.js)"
+    - name: Build
+      run: |
+        npm install
+        npm run-script build
+      env:
+        REACT_APP_OPENAIAPIKey: ${{ secrets.REACT_APP_APIKey }}
+        REACT_APP_OPENAIAPISecret: ${{ secrets.REACT_APP_APISecret }}
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: .
-          branch: gh-pages
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: build
